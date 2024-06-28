@@ -14,30 +14,30 @@ const App = () => {
   const { currentUser, isLoading, fetchUserInfo } = useUserStore();
   useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
-      fetchUserInfo(user.uid);
+      fetchUserInfo(user?.uid);
     });
 
     return () => {
       unSub();
     };
   }, [fetchUserInfo]);
-
-  if (isLoading) return <div className="loading">Loading...</div>;
-  return (
-    <div className='container'>
-    
-      (
+  
+console.log(currentUser);
+  if (isLoading) return <div className="loading">Loading...</div>;   
+    return (
+    <div className="container">
+      {currentUser ? (
         <>
           <List />
           <Chat />
-          <Detail/>
+          <Detail />
         </>
-        
-      ):(<Login/>)
-      <Notification/>
-      
+      ) : (
+        <Login />
+      )}
+      <Notification />
     </div>
-  )
+  );
 }
 
 export default App
