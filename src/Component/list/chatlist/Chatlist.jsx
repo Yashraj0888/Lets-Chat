@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import "./chatList.css";
 import AddUser from "./add_user/AddUser";
 import { useUserStore } from "../../../lib/useStore";
-import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
-import { db } from "../../../lib/firebase";
+import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { useChatStore } from "../../../lib/chatStore";
+import { db } from "../../../lib/firebase";
 
 const ChatList = () => {
   const [chats, setChats] = useState([]);
@@ -12,7 +12,7 @@ const ChatList = () => {
   const [input, setInput] = useState("");
 
   const { currentUser } = useUserStore();
-  const { chatId, changeChat } = useChatStore();
+  const {changeChat } = useChatStore();
 
   useEffect(() => {
     const unSub = onSnapshot(
@@ -41,27 +41,7 @@ const ChatList = () => {
   }, [currentUser.id]);
 
   const handleSelect = async (chat) => {
-    const userChats = chats.map((item) => {
-      const { user, ...rest } = item;
-      return rest;
-    });
-
-    const chatIndex = userChats.findIndex(
-      (item) => item.chatId === chat.chatId
-    );
-
-    userChats[chatIndex].isSeen = true;
-
-    const userChatsRef = doc(db, "userchats", currentUser.id);
-
-    try {
-      await updateDoc(userChatsRef, {
-        chats: userChats,
-      });
-      changeChat(chat.chatId, chat.user);
-    } catch (err) {
-      console.log(err);
-    }
+    changeChat(chat.chatId,chat.user)
   };
 
   const filteredChats = chats.filter((c) =>

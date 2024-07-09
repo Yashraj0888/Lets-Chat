@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react"
 import "./chat.css"
 import EmojiPicker from "emoji-picker-react"
-import { doc, onSnapshot } from "firebase/firestore"
+import { arrayUnion, doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore"
 import { db } from "../../lib/firebase"
+import { useChatStore } from "../../lib/chatStore"
+import { useUserStore } from "../../lib/useStore"
 
 const Chat=()=>{
 
@@ -11,31 +13,75 @@ const Chat=()=>{
     const [text,setText]=useState("")
     const  endRef=useRef(null)
 
+    const { currentUser } = useUserStore();
+    const { chatId,user } = useChatStore();
+
     useEffect(()=>{
         endRef.current?.scrollIntoView({behavior:"smooth"})
     })
 
     useEffect(()=>{
-        const unSub=onSnapshot(doc(db,"chats","iLX32PJseiBJ2UJIyflU"),(res)=>{
+        const unSub=onSnapshot(doc(db,"chats",chatId),(res)=>{
             setChat(res.data())
         })
         return ()=>{
-           unSub 
+           unSub ()
         }
-    },[])
+    },[chatId])
     const handleEmoji=(e)=>{
         setText((prev)=>prev+e.emoji);
         setOpen(false)
+    }
+    const handleSend=async ()=>{
+        if(!text==="") return 
+
+        try{
+            await updateDoc(doc(db, "chats", chatId), {
+                messages: arrayUnion({
+                  senderId: currentUser.id,
+                  text,
+                  createdAt: new Date(),
+                }),
+              });
+
+            const userIDs=[currentUser.id,user.id]
+
+            userIDs.forEach(async (id) => {
+                const userChatsRef = doc(db, "userchats", id);
+                const userChatsSnapshot = await getDoc(userChatsRef);
+        
+                if (userChatsSnapshot.exists()) {
+                  const userChatsData = userChatsSnapshot.data();
+        
+                  const chatIndex = userChatsData.chats.findIndex(
+                    (c) => c.chatId === chatId
+                  );
+        
+                  userChatsData.chats[chatIndex].lastMessage = text;
+                  userChatsData.chats[chatIndex].isSeen =
+                    id === currentUser.id ? true : false;
+                  userChatsData.chats[chatIndex].updatedAt = Date.now();
+        
+                  await updateDoc(userChatsRef, {
+                    chats: userChatsData.chats,
+                  });
+                }
+              });
+
+        }
+        catch(err){
+            console.log(err);
+        }
     }
 
     return (
         <div className="chat">
         <div className="top">
             <div className="user">
-                <img src="./avatar.png" alt="" />
+                <img src={user.avatar||"./avatar.png"} alt="" />
                 <div className="texts">
-                    <span>Yash</span>
-                    <p>Lorem ipsum dolor sit </p>
+                    <span>{user.username}</span>
+                    <p>Hii </p>
                 </div>
             </div>
             <div className="icons">
@@ -46,41 +92,20 @@ const Chat=()=>{
             </div>
         </div>
         <div className="center">
-            <div className="message">
-                <img src="./avatar.png" alt="" />
-                <div className="text">
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. 
-                    </p>
-                    <span>1 minutes ago</span>
-                </div>
-            </div>
-            <div className="message own">
-                
-                <div className="text">
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                    </p>
-                    <span>1 minutes ago</span>
-                </div>
-            </div>
-            <div className="message">
-                <img src="./avatar.png" alt="" />
-                <div className="text">
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas perspiciatis rem perferendis voluptate consectetur architecto quo ad, animi officia neque  
-                    </p>
-                    <span>1 minutes ago</span>
-                </div>
-            </div>
-            <div className="message own">
-
-                
-                <div className="text">
-                <img src="https://cdn.pixabay.com/photo/2024/01/15/11/36/batman-8510022_640.png" alt="" />
-                
-                    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Voluptas perspiciatis rem perferendis voluptate consectetur architecto quo ad, animi officia neque 
-                    </p>
-                    <span>1 minutes ago</span>
-                </div>
-            </div>
+            
+            { chat?.messages?.map((message)=>{
+                const isOwnMessage = message.senderId === currentUser.id;
+  return (
+    <div className={`message ${isOwnMessage ? 'message own' : 'message'}`} key={message.createdAt}>
+      <div className="texts">
+        {message.img && <img src={message.img} alt="" />}
+        <p>{message.text}</p>
+        <span></span>
+      </div>
+    </div>
+  );
+            })
+            }
 
 
             <div ref={endRef}></div>
@@ -101,7 +126,7 @@ const Chat=()=>{
                 </div>
                 
             </div>
-            <button className="sendButton">Send</button>
+            <button className="sendButton" onClick={handleSend}>Send</button>
 
         </div>
         </div>
