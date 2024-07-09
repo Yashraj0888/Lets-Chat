@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./chatList.css";
 import AddUser from "./add_user/AddUser";
 import { useUserStore } from "../../../lib/useStore";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
 import { useChatStore } from "../../../lib/chatStore";
 import { db } from "../../../lib/firebase";
 
@@ -41,7 +41,24 @@ const ChatList = () => {
   }, [currentUser.id]);
 
   const handleSelect = async (chat) => {
-    changeChat(chat.chatId,chat.user)
+    const userChats=chats.map((item)=>{
+      const {user,...rest}=item;
+      return rest
+    })
+    const chatIndex=userChats.findIndex(item=>item.chatId===chat.chatId)
+    userChats[chatIndex].isSeen=true;
+
+    const userChatRef=doc(db,"userchats",currentUser.id);
+
+    try{
+      await updateDoc(userChatRef,{
+        chats:userChats,
+      })
+      changeChat(chat.chatId,chat.user)
+    }catch(err){
+      console.log(err)
+    }
+    
   };
 
   const filteredChats = chats.filter((c) =>
