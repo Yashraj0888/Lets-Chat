@@ -3,8 +3,11 @@ import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { useChatStore } from "../../lib/chatStore";
 import { auth, db } from "../../lib/firebase"
 import { useUserStore } from "../../lib/useStore";
+import image from "./image.js"
 import "./detail.css"
+import { useState } from "react";
 const Detail=()=>{
+    const [img,setImg]=useState([image])
 
     const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
         useChatStore();
@@ -51,58 +54,20 @@ const Detail=()=>{
                         <span>Media</span>
                         <img src="./arrowDown.png" alt="" />
                     </div>
-                
-                    <div className="photos">
-                        <div className="photoItem">
-                            <div className="photoDetail">
-                                <img src="https://cdn.pixabay.com/photo/2024/01/15/11/36/batman-8510022_640.png" alt="" />
-                                <span>photo_2024_2.png</span>
+                        {image.map((img) => (
+                        <div key={img.id} className="photos">
+                            <div key={img.id} className="photoItem">
+                                <div className="photoDetail">
+                                    <img src={img.image} alt="" />
+                                    <span>Im Batman.png</span> 
+                                </div>
+                                <img src="./download.png" alt="Download" />
                             </div>
-                        <img src="./download.png" alt="" />
-
                         </div>
-                        <div className="photoItem">
-                            <div className="photoDetail">
-                                <img src="https://cdn.pixabay.com/photo/2024/01/15/11/36/batman-8510022_640.png" alt="" />
-                                <span>photo_2024_2.png</span>
-                            </div>
-                        <img src="./download.png" alt="" />
-
-                        </div>
-                        <div className="photoItem">
-                            <div className="photoDetail">
-                                <img src="https://cdn.pixabay.com/photo/2024/01/15/11/36/batman-8510022_640.png" alt="" />
-                                <span>photo_2024_2.png</span>
-                            </div>
-                        <img src="./download.png" alt="" />
-
-                        </div>
-                        <div className="photoItem">
-                            <div className="photoDetail">
-                                <img src="https://cdn.pixabay.com/photo/2024/01/15/11/36/batman-8510022_640.png" alt="" />
-                                <span>photo_2024_2.png</span>
-                            </div>
-                        <img src="./download.png" alt="" />
-
-                        </div>
-                        <div className="photoItem">
-                            <div className="photoDetail">
-                                <img src="https://cdn.pixabay.com/photo/2024/01/15/11/36/batman-8510022_640.png" alt="" />
-                                <span>photo_2024_2.png</span>
-                            </div>
-                        <img src="./download.png" alt="" />
-
-                        </div>
-                        <div className="photoItem">
-                            <div className="photoDetail">
-                                <img src="https://cdn.pixabay.com/photo/2024/01/15/11/36/batman-8510022_640.png" alt="" />
-                                <span>photo_2024_2.png</span>
-                            </div>
-                        <img src="./download.png" alt="" />
-
-                        </div>
+                        ))}
+                    
                         
-                    </div>
+                   
                 </div>
                 <div className="option">
                     <div className="title">
