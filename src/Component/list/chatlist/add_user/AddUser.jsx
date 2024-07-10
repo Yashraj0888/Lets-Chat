@@ -3,6 +3,7 @@ import { db } from "../../../../lib/firebase";
 import {arrayUnion,collection,doc,getDoc,getDocs,query,serverTimestamp,setDoc,updateDoc,where,} from "firebase/firestore";
 import { useState } from "react";
 import { useUserStore } from "../../../../lib/useStore";
+import ChatList from "../Chatlist"   
 
 const AddUser = () => {
   const [user, setUser] = useState(null);
@@ -13,6 +14,7 @@ const AddUser = () => {
     e.preventDefault();
     const formData = new FormData(e.target);
     const username = formData.get("username");
+    
 
     try {
       const userRef = collection(db, "users");
@@ -75,6 +77,8 @@ const AddUser = () => {
     } catch (err) {
       console.log(err);
     }
+    document.querySelector(".addUser").style.display="none";
+    
   };
 
   return (

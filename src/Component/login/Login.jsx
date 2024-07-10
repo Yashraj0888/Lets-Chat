@@ -11,12 +11,21 @@ import upload from "../../lib/upload";
 
 
 const Login = () => {
+  const signup=document.querySelector(".signup")
+  const loginn=document.querySelector(".Login")
   const [avatar, setAvatar] = useState({
     file: null,
     url: "",
   });
 
   const [loading, setLoading] = useState(false);
+  const handleSignUp=(e)=>{
+    e.preventDefault();
+    loginn.style.display="none"
+    signup.style.display="block"
+
+
+  }
 
   const handleAvatar = (e) => {
     if (e.target.files[0]) {
@@ -30,6 +39,7 @@ const Login = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     setLoading(true);
+    const form = e.target;
     const formData = new FormData(e.target);
 
     const { username, email, password } = Object.fromEntries(formData);
@@ -51,14 +61,23 @@ const Login = () => {
       });
 
       toast.success("Account created! You can login now!");
+      clickSignUp();
     } catch (err) {
       console.log(err);
       toast.error(err.message);
     } 
     finally{
       setLoading(false)
+      form.reset()
+
     }
+    
   };
+  const clickSignUp=()=>{
+    loginn.style.display="block"
+    signup.style.display="none"
+      
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -74,21 +93,31 @@ const Login = () => {
       toast.error(err.message);
     } finally {
       setLoading(false);
+
     }
     
   };
 
   return (
     <div className="login">
+      <div className="Login">
+
       <div className="item">
         <h2>Welcome back,</h2>
         <form onSubmit={handleLogin}>
           <input type="text" placeholder="Email" name="email" />
           <input type="password" placeholder="Password" name="password" />
           <button disabled={loading}>{loading ? "Loading" : "Sign In"}</button>
+          <button className="sign" onClick={handleSignUp} >Not a Member? Sign up</button>
         </form>
       </div>
-      <div className="separator"></div>
+      </div>
+
+    
+      {/* <div className="separator"></div> */}
+      
+      <div className="signup" style={{display:"none"}}>
+
       <div className="item">
         <h2>Create an Account</h2>
         <form onSubmit={handleRegister}>
@@ -108,6 +137,8 @@ const Login = () => {
           <button disabled={loading}>{loading ? "Loading" : "Sign Up"}</button>
         </form>
       </div>
+      </div>
+      
     </div>
   );
 };
