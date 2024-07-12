@@ -13,7 +13,6 @@ import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/useStore";
 import upload from "../../lib/upload";
 
-
 const Chat = () => {
   const [chat, setChat] = useState();
   const [open, setOpen] = useState(false);
@@ -61,14 +60,11 @@ const Chat = () => {
 
   const handleSend = async () => {
     if (text === "") return;
-
     let imgUrl = null;
-
     try {
       if (img.file) {
         imgUrl = await upload(img.file);
       }
-
       await updateDoc(doc(db, "chats", chatId), {
         messages: arrayUnion({
           senderId: currentUser.id,
@@ -77,25 +73,19 @@ const Chat = () => {
           ...(imgUrl && { img: imgUrl }),
         }),
       });
-
       const userIDs = [currentUser.id, user.id];
-
       userIDs.forEach(async (id) => {
         const userChatsRef = doc(db, "userchats", id);
         const userChatsSnapshot = await getDoc(userChatsRef);
-
         if (userChatsSnapshot.exists()) {
           const userChatsData = userChatsSnapshot.data();
-
           const chatIndex = userChatsData.chats.findIndex(
             (c) => c.chatId === chatId
           );
-
           userChatsData.chats[chatIndex].lastMessage = text;
           userChatsData.chats[chatIndex].isSeen =
             id === currentUser.id ? true : false;
           userChatsData.chats[chatIndex].updatedAt = Date.now();
-
           await updateDoc(userChatsRef, {
             chats: userChatsData.chats,
           });
@@ -103,13 +93,18 @@ const Chat = () => {
       });
     } catch (err) {
       console.log(err);
-    } finally{
-    setImg({
-      file: null,
-      url: "",
-    });
+    } finally {
+      setImg({
+        file: null,
+        url: "",
+      });
+      setText("");
+    }
+  };
 
-    setText("");
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      handleSend();
     }
   };
 
@@ -176,6 +171,7 @@ const Chat = () => {
           }
           value={text}
           onChange={(e) => setText(e.target.value)}
+          onKeyDown={handleKeyDown}
           disabled={isCurrentUserBlocked || isReceiverBlocked}
         />
         <div className="emoji">
