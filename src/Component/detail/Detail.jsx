@@ -5,36 +5,39 @@ import { auth, db } from "../../lib/firebase"
 import { useUserStore } from "../../lib/useStore";
 import image from "./image.js"
 import "./detail.css"
-import { useState } from "react";
-const Detail=()=>{
-    const [img,setImg]=useState([image])
+import { useRef, useState } from "react";
+const Detail = () => {
+    const [img, setImg] = useState([image]);
+    const [showMedia, setShowMedia] = useState(false);
 
-    const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } =
-        useChatStore();
+    const { chatId, user, isCurrentUserBlocked, isReceiverBlocked } = useChatStore();
+    const { currentUser } = useUserStore();
 
-    const {currentUser}=useUserStore
-    const handleBlock=async ()=>{
-        if(!user) return
+    const handleMediaClick = () => {
+        setShowMedia(!showMedia); // Toggle showMedia state
+    };
 
-        const userDocRef=doc(db,"users",currentUser.id)
+    const handleBlock = async () => {
+        if (!user) return;
 
-        try{
-            await updateDoc(userDocRef,{
-                blocked:isReceiverBlocked?arrayRemove( user.id):arrayUnion(user.id)
+        const userDocRef = doc(db, "users", currentUser.id);
 
-            })
-            changeBlock()
-        }catch(err){
-            console.log(err)
+        try {
+            await updateDoc(userDocRef, {
+                blocked: isReceiverBlocked ? arrayRemove(user.id) : arrayUnion(user.id)
+            });
+            changeBlock();
+        } catch (err) {
+            console.log(err);
         }
-    }
+    };
+
     return (
         <div className="detail">
             <div className="user">
-                <img src={user?.avatar||"./avatar.png"} alt="" />
+                <img src={user?.avatar || "./avatar.png"} alt="" />
                 <h2>{user?.username}</h2>
                 <p>Lorem ipsum dolor sit amet.</p>
-
             </div>
             <div className="info">
                 <div className="option">
@@ -50,11 +53,13 @@ const Detail=()=>{
                     </div>
                 </div>
                 <div className="option">
-                    <div className="title">
+                    <div className="title" onClick={handleMediaClick}>
                         <span>Media</span>
-                        <img src="./arrowDown.png" alt="" />
+                        <img src={showMedia ? "./arrowDown.png" : "./arrowUp.png"} alt="" />
                     </div>
-                        {image.map((img) => (
+                    {showMedia && ( // Conditionally render if showMedia is true
+                        <div className="photos">
+                            {image.map((img) => (
                         <div key={img.id} className="photos">
                             <div key={img.id} className="photoItem">
                                 <div className="photoDetail">
@@ -65,9 +70,8 @@ const Detail=()=>{
                             </div>
                         </div>
                         ))}
-                    
-                        
-                   
+                        </div>
+                    )}
                 </div>
                 <div className="option">
                     <div className="title">
@@ -76,17 +80,14 @@ const Detail=()=>{
                     </div>
                 </div>
 
-                <button onClick={handleBlock}>{
-                    isCurrentUserBlocked?"You are blocked!":isReceiverBlocked?"User block": "Block user"
+                <button onClick={handleBlock}>
+                    {isCurrentUserBlocked ? "You are blocked!" : isReceiverBlocked ? "User block" : "Block user"}
+                </button>
 
-                }</button>
-
-                <button className="logOut" onClick={()=>auth.signOut()}>Log out</button>
-                
+                <button className="logOut" onClick={() => auth.signOut()}>Log out</button>
             </div>
         </div>
-        
-    )
-}
+    );
+};
 
-export default Detail
+export default Detail;

@@ -66,6 +66,18 @@
         max-width: 70%;
         display: flex;
         gap: 20px;
+
+        &.other{
+          align-self: flex-start;
+  
+          .texts {
+            p {
+              color: black;
+              background-color: #766a6a;
+            }
+          }
+        }
+        
   
         &.own {
           align-self: flex-end;

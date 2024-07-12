@@ -12,6 +12,7 @@ import { db } from "../../lib/firebase";
 import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/useStore";
 import upload from "../../lib/upload";
+import timeago from "./timeago";
 
 const Chat = () => {
   const [chat, setChat] = useState();
@@ -128,14 +129,14 @@ const Chat = () => {
         {chat?.messages?.map((message, index) => (
           <div
             className={
-              message.senderId === currentUser?.id ? "message own" : "message"
+              message.senderId === currentUser?.id ? "message own " : "message other"
             }
             key={index}
           >
             <div className="texts">
               {message.img && <img src={message.img} alt="" />}
               <p>{message.text}</p>
-              <span></span>
+              <span>{timeago(message.createdAt)}</span>
             </div>
           </div>
         ))}
