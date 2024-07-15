@@ -105,7 +105,7 @@ const Login = () => {
           <form onSubmit={handleLogin}>
             <input type="text" placeholder="Email" name="email" />
             <input type="password" placeholder="Password" name="password" />
-            <button disabled={loading}>{loading ? "Loading" : "Sign In"}</button>
+            <button disabled={loading}>{loading ? "Hang onn It's Loading" : "Sign In"}</button>
             <button className="sign" onClick={handleSignUp}>Not a Member? Sign up</button>
           </form>
         </div>
@@ -128,7 +128,7 @@ const Login = () => {
             <input type="text" placeholder="Username" name="username" />
             <input type="text" placeholder="Email" name="email" />
             <input type="password" placeholder="Password" name="password" />
-            <button disabled={loading}>{loading ? "Loading" : "Sign Up"}</button>
+            <button disabled={loading}>{loading ? "Hang onn while we are crearing the Account" : "Sign Up"}</button>
           </form>
         </div>
       </div>

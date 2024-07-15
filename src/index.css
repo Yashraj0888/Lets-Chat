@@ -41,9 +41,17 @@ body{
   
 }
 .loading{
-  padding: 50px;
-  font-size: 36px;
-  border-radius: 10px;
-  background-color: rgba(17 , 25, 40, 0.75);
   
+  margin: auto;
+  border: 10px solid #EAF0F6;
+  border-radius: 50%;
+  border-top: 20px solid #FF7A59;
+  width: 100px;
+  height: 100px;
+  animation: spinner 4s linear infinite;
+}
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

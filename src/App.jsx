@@ -25,17 +25,18 @@ const App = () => {
     };
   }, [fetchUserInfo]);
   
-  if (isLoading) return <div className="loading">Loading...</div>;   
+  if (isLoading) return <div className="loading"></div>;   
     return (
     <div className="container">
       {currentUser ? (
         <>
+
           <List />
           {chatId && <Chat />}
-           { chatId &&<Detail />
-            }
-          
+          { chatId &&<Detail />}   
+
         </>
+        
       ) : (
         <Login />
       )}
