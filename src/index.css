@@ -1,14 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Edu+AU+VIC+WA+NT+Hand:wght@400..700&display=swap');
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
-    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  font-family: "Edu AU VIC WA NT Hand", cursive;
+  font-optical-sizing: auto;
+  font-weight:600;
+  font-style: normal;
 }
 
 
 body{
   background-image: url("/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  
   display:flex;
   align-items: center;
   justify-content: center;
@@ -22,7 +30,7 @@ body{
   color:#fff;
   width: 90vw;
   height: 90vh;
-  background-color: rgba(17, 25, 40, 0.871);
+  background-color: rgba(17, 25, 40, 0);
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.121);
 }
@@ -54,4 +62,13 @@ body{
 @keyframes spinner {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+@media (max-width: 600px) {
+    .container{
+          display: flex;
+      flex-direction: column;
+      align-items: center;
+  justify-content: center;
+    }
 }

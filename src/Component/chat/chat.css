@@ -72,6 +72,7 @@
   
           .texts {
             p {
+              padding: 10px;
               color: black;
               background-color: #766a6a;
             }
@@ -84,6 +85,7 @@
   
           .texts {
             p {
+              padding: 10px;
               background-color: #5183fe;
             }
           }
@@ -143,11 +145,11 @@
   
       input {
         flex: 1;
-        background-color: rgba(17, 25, 40, 0.5);
+        background-color: rgba(11, 12, 15, 0.411);
         border: none;
         outline: none;
         color: white;
-        padding: 20px;
+        padding: 10px;
         border-radius: 10px;
         font-size: 16px;
   
@@ -179,5 +181,22 @@
           cursor: not-allowed;
         }
       }
+    }
+  }
+  @media (max-width: 600px){
+    .chat{
+     
+      width: 400px;
+      margin-top: 50px;
+    }
+    .sendInput{
+      width: 100px;
+    }
+    .bottomIcons {
+      width: 80px;
+      
+    }
+    .bottom{
+      width: 400px;
     }
   }

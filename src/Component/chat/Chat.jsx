@@ -116,7 +116,7 @@ const Chat = () => {
           <img src={user?.avatar || "./avatar.png"} alt="" />
           <div className="texts">
             <span>{user?.username}</span>
-            <p>Lorem ipsum dolor, sit amet.</p>
+            <p>Made with love by Yash.</p>
           </div>
         </div>
         <div className="icons">
@@ -150,7 +150,7 @@ const Chat = () => {
         <div ref={endRef}></div>
       </div>
       <div className="bottom">
-        <div className="icons">
+        <div className="icons bottomIcons">
           <label htmlFor="file">
             <img src="./img.png" alt="" />
           </label>
@@ -163,7 +163,7 @@ const Chat = () => {
           <img src="./camera.png" alt="" />
           <img src="./mic.png" alt="" />
         </div>
-        <input
+        <input className="sendInput"
           type="text"
           placeholder={
             isCurrentUserBlocked || isReceiverBlocked

@@ -37,7 +37,7 @@ const Detail = () => {
             <div className="user">
                 <img src={user?.avatar || "./avatar.png"} alt="" />
                 <h2>{user?.username}</h2>
-                <p>Lorem ipsum dolor sit amet.</p>
+                <p>Made with love by Yash.</p>
             </div>
             <div className="info">
                 <div className="option">
