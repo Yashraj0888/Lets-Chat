@@ -13,6 +13,12 @@ import { useChatStore } from "../../lib/chatStore";
 import { useUserStore } from "../../lib/useStore";
 import upload from "../../lib/upload";
 import timeago from "./timeago";
+import song from "../../../public/tick.wav"
+
+const playSound = () => {
+  const audio = new Audio(song);
+  audio.play();
+}
 
 const Chat = () => {
   const [chat, setChat] = useState();
@@ -101,6 +107,7 @@ const Chat = () => {
       });
       setText("");
     }
+    playSound();
   };
 
   const handleKeyDown = (e) => {
