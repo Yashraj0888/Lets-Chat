@@ -117,7 +117,7 @@ const Login = () => {
           <form onSubmit={handleRegister}>
             <label htmlFor="file">
               <img src={avatar.url || "./avatar.png"} alt="" />
-              Upload an image
+              Upload your image
             </label>
             <input
               type="file"
