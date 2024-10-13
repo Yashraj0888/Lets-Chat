@@ -9,7 +9,7 @@ import { getStorage } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_API_key,
+  apiKey: "AIzaSyB0Je0oG06PY2uCGkqFAddd2eniSG8nKoA",
   authDomain: "let-s-chat-1c53f.firebaseapp.com",
   projectId: "let-s-chat-1c53f",
   storageBucket: "let-s-chat-1c53f.appspot.com",

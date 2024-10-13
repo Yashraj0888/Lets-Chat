@@ -49,6 +49,7 @@ const Login = () => {
 
     try {
       const res = await createUserWithEmailAndPassword(auth, email, password);
+      console.log(res)
       const imgUrl = await upload(avatar.file);
       await setDoc(doc(db, "users", res.user.uid), {
         username,
@@ -95,6 +96,7 @@ const Login = () => {
     } finally {
       setLoading(false);
     }
+    window.location.reload()
   };
 
   return (
@@ -117,7 +119,7 @@ const Login = () => {
           <form onSubmit={handleRegister}>
             <label htmlFor="file">
               <img src={avatar.url || "./avatar.png"} alt="" />
-              Upload yours image
+              Upload your image
             </label>
             <input
               type="file"
