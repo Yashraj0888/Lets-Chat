@@ -1,7 +1,7 @@
 
 # Let's Chat
 
-**Let's Chat** is a real-time chat application designed to provide a seamless messaging experience. It’s hosted on [Render](https://lets-chat-ccgr.onrender.com/).
+**Let's Chat** is a real-time chat application designed to provide a seamless messaging experience. It’s hosted on render [Click here for demo](https://lets-chat-ccgr.onrender.com/).
 
 ## Project Overview
 
